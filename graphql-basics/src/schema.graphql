@@ -1,0 +1,82 @@
+type Query {
+    add(numbers: [Float!]!): Float!
+    me: User!
+    getUser(id: ID, name: String): User!
+    getUsers(query: String): [User]!
+    getPost(id: ID!): Post!
+    getPosts(query: String): [Post!]!
+}
+
+type Mutation {
+    createUser(user: UserInput!): User!
+    deleteUser(user: UserInput!): User!
+    updateUser(user: UserInput!, data: UpdateUserInput!): User!
+    createPost(post: PostInput!): Post!
+    deletePosts(post: PostInput!): [Post]!
+    updatePost(id: ID!, data: UpdatePostInput!): Post!
+}
+
+type Subscription {
+    count: Int!
+    post: PostSubscription!
+    deletePosts: DeletePostsSubscription
+}
+
+type User {
+    id: ID!
+    name: String!
+    email: String!
+    age: Int
+    posts: [Post]!
+}
+
+type Post {
+    id: ID!
+    title: String!
+    description: String
+    published: Boolean!
+    user: User!
+}
+
+type PostSubscription {
+    event: MutationType!
+    data: Post
+}
+
+type DeletePostsSubscription {
+    event: MutationType!
+    data: [Post]
+}
+
+input UserInput {
+    id: ID
+    name: String
+    email: String
+    age: Int
+}
+
+input UpdateUserInput {
+    name: String
+    email: String
+    age: Int
+}
+
+input PostInput {
+    id: ID
+    title: String
+    description: String
+    published: Boolean
+    user: UserInput
+}
+
+input UpdatePostInput {
+    title: String
+    description: String
+    published: Boolean
+}
+
+enum MutationType {
+    CREATE
+    UPDATE
+    DELETE
+}
