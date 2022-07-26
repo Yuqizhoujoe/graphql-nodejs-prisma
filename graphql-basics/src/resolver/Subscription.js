@@ -23,9 +23,9 @@ const Subscription = {
       return pubsub.asyncIterator(subscriptionEvents.POST);
     },
   },
-  deletePosts: {
+  deletePost: {
     subscribe(_, arg, { pubsub }, info) {
-      return pubsub.asyncIterator(subscriptionEvents.DELETE_POSTS);
+      return pubsub.asyncIterator(subscriptionEvents.DELETE_POST);
     },
   },
 };

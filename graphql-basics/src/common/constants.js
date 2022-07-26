@@ -1,6 +1,6 @@
 export const subscriptionEvents = {
   POST: "post",
-  DELETE_POSTS: "deletePosts",
+  DELETE_POST: "deletePost",
 };
 
 export const events = {

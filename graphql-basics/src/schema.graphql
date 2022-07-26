@@ -9,17 +9,17 @@ type Query {
 
 type Mutation {
     createUser(user: UserInput!): User!
-    deleteUser(user: UserInput!): User!
-    updateUser(user: UserInput!, data: UpdateUserInput!): User!
+    deleteUser(id: ID!): User!
+    updateUser(id: ID!, data: UpdateUserInput!): User!
     createPost(post: PostInput!): Post!
-    deletePosts(post: PostInput!): [Post]!
+    deletePost(id: ID!): [Post]!
     updatePost(id: ID!, data: UpdatePostInput!): Post!
 }
 
 type Subscription {
     count: Int!
     post: PostSubscription!
-    deletePosts: DeletePostsSubscription
+    deletePost: DeletePostSubscription
 }
 
 type User {
@@ -27,8 +27,10 @@ type User {
     name: String!
     email: String!
     age: Int
-    posts: [Post]!
+    posts: [Post]
 }
+
+scalar DateTime
 
 type Post {
     id: ID!
@@ -36,6 +38,7 @@ type Post {
     description: String
     published: Boolean!
     user: User!
+    createdAt: DateTime
 }
 
 type PostSubscription {
@@ -43,9 +46,9 @@ type PostSubscription {
     data: Post
 }
 
-type DeletePostsSubscription {
+type DeletePostSubscription {
     event: MutationType!
-    data: [Post]
+    data: Post
 }
 
 input UserInput {
@@ -66,7 +69,7 @@ input PostInput {
     title: String
     description: String
     published: Boolean
-    user: UserInput
+    userId: ID!
 }
 
 input UpdatePostInput {

@@ -9,12 +9,11 @@ console.log(subtract(3, 3));*/
 
 import { GraphQLServer, PubSub } from "graphql-yoga";
 // import { ApolloServer, gql } from "apollo-server";
-import db from "./db";
 import Mutation from "./resolver/Mutation";
 import Query from "./resolver/Query";
-import { Post, User } from "./resolver/TypeTransformation";
 import * as path from "path";
 import Subscription from "./resolver/Subscription";
+import prisma from "../prisma/prisma";
 
 // 5 Scalar types = String, Boolean, Int, Float, ID (unique identifier)
 // Type definition (schema)
@@ -28,12 +27,10 @@ const typeDefs = path.resolve(__dirname, "schema.graphql").toString();
 const resolvers = {
   Mutation,
   Query,
-  Post,
-  User,
   Subscription,
 };
 const context = {
-  db,
+  db: prisma,
   pubsub,
 };
 const server = new GraphQLServer({
@@ -44,7 +41,7 @@ const server = new GraphQLServer({
   cache: "bounded",
 });
 
-server.start().then(({ url }) => console.log(`Server ready at ${url}`));
+server.start().then((server) => console.log(server));
 
 // server.listen().then(({ url }) => {
 //   console.log(`Server ready at ${url}`);

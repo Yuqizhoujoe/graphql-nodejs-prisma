@@ -1,0 +1,33 @@
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Post {
+  id          String  @id @unique(map: "id_UNIQUE") @db.VarChar(50)
+  title       String  @db.VarChar(45)
+  description String? @db.LongText
+  published    Boolean? @db.TinyInt()
+  userId      String? @db.VarChar(45)
+  user        User?   @relation(fields: [userId], references: [id])
+  createdAt     DateTime @default(now())
+
+  @@index([userId], map: "userId_idx")
+    @@fulltext([title])
+    @@fulltext([title, description])
+}
+
+model User {
+  id    String @id @unique(map: "id_UNIQUE") @db.VarChar(50)
+  name  String @db.VarChar(50)
+  email String @db.VarChar(50) @unique
+  age   Int?
+  posts  Post[]
+  @@fulltext([name])
+      @@fulltext([name, email])
+}
